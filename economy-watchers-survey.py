@@ -1,16 +1,11 @@
 import glob
 import json
 import os
-import sys
 
 import datasets
 from datasets import DatasetInfo, SplitGenerator, Value
 
-sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
-
-from economy_watchers_survey import __version__
-from economy_watchers_survey.create_dataset import COL_CURRENT, COL_FUTURE
-
+VERSION = "2024.03.0"
 EWS_DESCRIPTION: str = (
     "The purpose of the survey is to promptly gain an accurate grasp of "
     "region-by-region economic trends. By enlisting the cooperation of people holding "
@@ -20,11 +15,21 @@ EWS_DESCRIPTION: str = (
     "enable them to observe any development that sensitively reflects economic "
     "activities, such as household activity, corporate activity, and employment."
 )
+col_default: list[str] = ["year-month", "地域", "関連", "業種・職種"]
+COL_CURRENT: list[str] = col_default + [
+    "景気の現状判断",
+    "判断の理由",
+    "追加説明及び具体的状況の説明",
+]
+COL_FUTURE: list[str] = col_default + [
+    "景気の先行き判断",
+    "景気の先行きに対する判断理由",
+]
 
 
 class EconomyWatchersSurveyConfig(datasets.BuilderConfig):
     def __init__(self, features: list[str], num_files_split_buffer: int, **kwargs):
-        super().__init__(version=datasets.Version(__version__), **kwargs)
+        super().__init__(version=datasets.Version(VERSION), **kwargs)
         self.features = features
         self.test_ratio = 0.1
         self.num_files_split_buffer = num_files_split_buffer
