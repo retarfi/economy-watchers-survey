@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from datasets import load_dataset, DatasetDict
+from datasets import DatasetDict, load_dataset
 
 
 @pytest.fixture
