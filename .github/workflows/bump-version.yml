@@ -1,0 +1,30 @@
+name: Bump version
+
+on:
+  create:
+    branches:
+  workflow_dispatch:
+
+jobs:
+  makepr:
+    name: Make PR
+    runs-on: ubuntu-latest
+    if: ${{ contains(github.ref, 'release/v') }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+    - name: Install poetry
+      run: pip install poetry
+    - name: Bump version
+      run: git branch --show-current | sed 's|release/v||' | xargs poetry version | { printf '::set-output name=PR_TITLE::'; cat; }
+      id: bump
+    - name: Bump version 2
+      run:  git branch --show-current | sed 's|release/v||' | xargs -I {} echo '__version__ = "{}"' > ./src/src/economy_watchers_survey/version.py
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        author: GitHub Actions <action@github.com>
+        commit-message: ${{ steps.bump.outputs.PR_TITLE }}
+        delete-branch: true
+        branch-suffix: short-commit-hash
+        title: ${{ steps.bump.outputs.PR_TITLE }}
