@@ -97,8 +97,8 @@ jobs:
     - name: HuggingFace upload
       run: |
         cp src/economy_watchers_survey/version.py hf/
-        huggingface-cli upload retarfi/economy-watchers-survey --repo-type dataset --include="*.jsonl" --include="version.py" --commit-message="Release ${{ steps.get_version.outputs.TAG }}"
-        huggingface-cli tag retarf/economy-watchers-survey ${{ steps.get_version.outputs.TAG }} --repo-type dataset -y
+        huggingface-cli upload retarfi/economy-watchers-survey hf --repo-type dataset --include="*.jsonl" --include="version.py" --commit-message="Release ${{ steps.get_version.outputs.TAG }}"
+        huggingface-cli tag retarfi/economy-watchers-survey ${{ steps.get_version.outputs.TAG }} --repo-type dataset -y
 
   delete-branch:
     runs-on: ubuntu-latest
