@@ -1,9 +1,12 @@
 import glob
 import json
 import os
+import sys
 
 import datasets
 from datasets import DatasetInfo, SplitGenerator, Value
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
 
 from economy_watchers_survey import __version__
 from economy_watchers_survey.create_dataset import COL_CURRENT, COL_FUTURE
