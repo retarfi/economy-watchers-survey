@@ -19,4 +19,4 @@ jobs:
           isort --check-only --diff --quiet .
       - name: black
         run: |
-          black black --check --diff --quiet --skip-magic-trailing-comma .
+          black --check --diff --quiet --skip-magic-trailing-comma .
