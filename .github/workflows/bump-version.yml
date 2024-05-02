@@ -18,7 +18,7 @@ jobs:
       run: git branch --show-current | sed 's|release/||' | xargs poetry version | { printf '::set-output name=PR_TITLE::'; cat; }
       id: bump
     - name: Bump version 2
-      run:  git branch --show-current | sed 's|release/||' | xargs -I {} echo '__version__ = "{}"' > ./src/src/economy_watchers_survey/version.py
+      run:  git branch --show-current | sed 's|release/||' | xargs -I {} echo '__version__ = "{}"' > ./src/economy_watchers_survey/version.py
     - name: Create pull request
       uses: peter-evans/create-pull-request@v6
       with:
