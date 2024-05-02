@@ -8,7 +8,7 @@ import pandas as pd
 
 from . import DATA_DIR
 
-col_default: list[str] = ["year-month", "地域", "関連", "業種・職種"]
+col_default: list[str] = ["id", "year-month", "地域", "関連", "業種・職種"]
 COL_CURRENT: list[str] = col_default + [
     "景気の現状判断",
     "判断の理由",
@@ -49,6 +49,10 @@ def extract_data(csv_path: str) -> pd.DataFrame:
         df.iat[i, idx_col_region] = region
         df.iat[i, idx_col_field] = field
     tpl_eval: tuple[str] = ("◎", "○", "□", "▲", "×")
+    df.reset_index(drop=True, inplace=True)
+    df["id"] = df.apply(
+        lambda row: "{}-{:04d}".format(row["year-month"], row.name), axis=1
+    )
     if num_type == "4":
         df = df[df["景気の現状判断"].isin(tpl_eval)][COL_CURRENT]
     elif num_type == "5":
@@ -56,10 +60,6 @@ def extract_data(csv_path: str) -> pd.DataFrame:
     else:
         raise ValueError()
     assert len(df) > 0
-    df.reset_index(drop=True, inplace=True)
-    df["id"] = df.apply(
-        lambda row: "{}-{:04d}".format(row["year-month"], row.name), axis=1
-    )
     return df
 
 

@@ -8,9 +8,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-datasets = "^2.19.0"
 beautifulsoup4 = "^4.12.3"
 pandas = "^2.2.2"
+huggingface-hub = "^0.23.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.4.2"
