@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  makepr:
-    name: Make PR
+  bump:
+    name: Bump version
     runs-on: ubuntu-latest
     if: ${{ contains(github.ref, 'release/') }}
     steps:
@@ -30,4 +30,4 @@ jobs:
     - name: Create pull request
       run: |
         echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token
-        gh pr create -B "main" -t "${{ steps.bump.outputs.PR_TITLE }}" -b ""
+        gh pr create -B "main" -t "${{ steps.bump.outputs.PR_TITLE }}" -b "This PR is automatically created by Github Actions"
