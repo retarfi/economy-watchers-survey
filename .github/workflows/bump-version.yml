@@ -28,9 +28,6 @@ jobs:
         git commit --author='GitHub Actions <action@github.com>' -m '${{ steps.bump.outputs.PR_TITLE }}'
         git push origin HEAD
     - name: Create pull request
-      uses: peter-evans/create-pull-request@v6
-      with:
-        author: GitHub Actions <action@github.com>
-        commit-message: ${{ steps.bump.outputs.PR_TITLE }}
-        title: ${{ steps.bump.outputs.PR_TITLE }}
-        base: main
+      run: gh pr create -B "main" -t "${{ steps.bump.outputs.PR_TITLE }}" -b ""
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
