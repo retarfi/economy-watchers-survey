@@ -30,7 +30,7 @@ jobs:
         poetry install
     - name: Crawl
       run: |
-        poetry run python -m src.economy_watchers_survey.crawl.download
+        poetry run python -m src.economy_watchers_survey.crawl
         poetry run python -m src.economy_watchers_survey.create_json
     - name: Diff
       id: diff

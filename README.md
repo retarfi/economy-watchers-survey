@@ -48,7 +48,7 @@ TBA
 
 ## Usage for local download
 ```sh
-poetry run python -m src.economy_watchers_survey.crawl.download
+poetry run python -m src.economy_watchers_survey.crawl
 poetry run python -m src.economy_watchers_survey.create_json
 ```
 
