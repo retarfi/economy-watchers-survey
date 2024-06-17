@@ -29,7 +29,3 @@ jobs:
         git add .
         git commit --author='GitHub Actions <action@github.com>' -m '${{ steps.bump.outputs.PR_TITLE }}'
         git push origin HEAD
-    - name: Create pull request
-      run: |
-        echo ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token
-        gh pr create -B "main" -t "${{ steps.bump.outputs.PR_TITLE }}" -b "This PR is automatically created by Github Actions"
