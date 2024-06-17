@@ -16,7 +16,8 @@ jobs:
         echo "VERSION=`date -d "$(date '+%Y%m01') 1 month ago" "+%Y.%m"`.0" >> $GITHUB_OUTPUT
     - name: Create new branch
       run: |
-        git checkout --set-upstream-to=origin/main -b release/${{ steps.get_version.outputs.VERSION }}
+        git config --global push.default current
+        git checkout -b release/${{ steps.get_version.outputs.VERSION }}
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
