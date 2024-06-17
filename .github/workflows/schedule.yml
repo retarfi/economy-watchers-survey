@@ -14,10 +14,6 @@ jobs:
       id: get_version
       run: |
         echo "VERSION=`date -d "$(date '+%Y%m01') 1 month ago" "+%Y.%m"`.0" >> $GITHUB_OUTPUT
-    - name: Create new branch
-      run: |
-        git checkout -b release/${{ steps.get_version.outputs.VERSION }} origin/main
-        git branch -vv
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
@@ -37,14 +33,12 @@ jobs:
         git add -N .
         git diff --name-only --exit-code
       continue-on-error: true
-    - name: Commit & Push
-      run: |
-        set -x
-        git config user.name github-actions[bot]
-        git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-        git add .
-        git commit --author='GitHub Actions <action@github.com>' -m 'Add ${{ steps.get_version.outputs.VERSION }} data'
-        git pull
-        git push origin release/${{ steps.get_version.outputs.VERSION }}
+    - name: Make PR
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: Add ${{ steps.get_version.outputs.VERSION }} data
+        branch: release/${{ steps.get_version.outputs.VERSION }}
+        base: main
+        commit-message: Add ${{ steps.get_version.outputs.VERSION }} data
       if: steps.diff.outcome == 'failure'
         
