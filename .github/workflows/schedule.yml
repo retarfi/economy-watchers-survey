@@ -40,5 +40,6 @@ jobs:
         branch: release/${{ steps.get_version.outputs.VERSION }}
         base: main
         commit-message: Add ${{ steps.get_version.outputs.VERSION }} data
+        token: ${{ GH_PERSONAL_ACCESS_TOKEN }}
       if: steps.diff.outcome == 'failure'
         
