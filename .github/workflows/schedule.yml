@@ -47,3 +47,11 @@ jobs:
         git pull
         git push origin HEAD
       if: steps.diff.outcome == 'failure'
+    - name: Make PR
+      uses: peter-evans/create-pull-request@v5
+      with:
+        title: Add ${{ steps.get_version.outputs.VERSION }} data
+        branch: release/${{ steps.get_version.outputs.VERSION }}
+        base: main
+      if: steps.diff.outcome == 'failure'
+        
