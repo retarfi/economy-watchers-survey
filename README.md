@@ -5,15 +5,21 @@
 <p align="center">
   <a href="https://github.com/retarfi/economy-watchers-survey/releases">
     <img alt="GitHub release" src="https://img.shields.io/github/v/release/retarfi/economy-watchers-survey.svg">
-  <a href="https://github.com/retarfi/economy-watchers-survey/actions/workflows/build-test.yml">
-    <img alt="Test" src="https://github.com/retarfi/economy-watchers-survey/actions/workflows/build-test.yml/badge.svg">
-  </a>
   </a>
   <a href="https://github.com/retarfi/economy-watchers-survey#license">
     <img alt="License" src="https://img.shields.io/badge/License_(code)-MIT-yellow">
   </a>
   <a href="https://github.com/retarfi/economy-watchers-survey/blob/main/data/LICENSE">
     <img alt="License" src="https://img.shields.io/badge/License_(data)-CC_BY_4.0-lightgrey.svg">
+  </a><br>
+  <a href="https://github.com/retarfi/economy-watchers-survey/actions/workflows/build-test.yml">
+    <img alt="Test" src="https://github.com/retarfi/economy-watchers-survey/actions/workflows/build-test.yml/badge.svg">
+  </a>
+  <a href="https://github.com/retarfi/economy-watchers-survey/actions/workflows/release.yml">
+    <img alt="Test" src="https://github.com/retarfi/economy-watchers-survey/actions/workflows/release.yml/badge.svg">
+  </a>
+  <a href="https://github.com/retarfi/economy-watchers-survey/actions/workflows/schedule.yml">
+    <img alt="Test" src="https://github.com/retarfi/economy-watchers-survey/actions/workflows/schedule.yml/badge.svg">
   </a>
 </p>
 
