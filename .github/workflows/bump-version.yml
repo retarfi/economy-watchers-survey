@@ -35,4 +35,4 @@ jobs:
         git add .
         git commit --author='GitHub Actions <action@github.com>' -m '${{ steps.bump.outputs.PR_TITLE }}'
         git push origin HEAD
-        if: steps.diff.outcome == 'failure'
+      if: steps.diff.outcome == 'failure'
