@@ -45,5 +45,6 @@ jobs:
         git config user.email 41898282+github-actions[bot]@users.noreply.github.com
         git add .
         git commit --author='GitHub Actions <action@github.com>' -m 'Add ${{ steps.get_version.outputs.VERSION }} data'
+        git pull
         git push origin HEAD
       if: steps.diff.outcome == 'failure'
