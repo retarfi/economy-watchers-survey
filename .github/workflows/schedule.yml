@@ -45,7 +45,7 @@ jobs:
         git add .
         git commit --author='GitHub Actions <action@github.com>' -m 'Add ${{ steps.get_version.outputs.VERSION }} data'
         git pull
-        git push origin HEAD
+        git push origin release/${{ steps.get_version.outputs.VERSION }}
       if: steps.diff.outcome == 'failure'
     - name: Make PR
       uses: peter-evans/create-pull-request@v5
