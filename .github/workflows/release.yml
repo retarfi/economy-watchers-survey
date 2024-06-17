@@ -5,13 +5,10 @@ on:
       - main
     types:
       - closed
-  workflow_dispatch:
 jobs:
   tagging:
     runs-on: ubuntu-latest
-    if: | 
-      ( github.event_name == 'workflow_dispatch' && contains( github.ref, 'release/' ) ) ||
-      ( github.event.pull_request.merged == true && startsWith( github.event.pull_request.head.ref, 'release/' ) )
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
     steps:
         - name: Determine the tag name based on the branch name
           id: get_version
