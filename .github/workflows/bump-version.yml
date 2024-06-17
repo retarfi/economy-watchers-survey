@@ -21,6 +21,12 @@ jobs:
       id: bump
     - name: Bump version 2
       run:  git branch --show-current | sed 's|release/||' | xargs -I {} echo '__version__ = "{}"' > ./src/economy_watchers_survey/version.py
+    - name: Diff
+      id: diff
+      run: |
+        git add -N .
+        git diff --name-only --exit-code
+      continue-on-error: true
     - name: Commit & Push
       run: |
         set -x
@@ -29,3 +35,4 @@ jobs:
         git add .
         git commit --author='GitHub Actions <action@github.com>' -m '${{ steps.bump.outputs.PR_TITLE }}'
         git push origin HEAD
+        if: steps.diff.outcome == 'failure'
