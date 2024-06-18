@@ -20,7 +20,13 @@ COL_FUTURE: list[str] = col_default + [
 ]
 
 
-def extract_data(csv_path: str) -> pd.DataFrame:
+def filter_df_comment(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
+    df = df[df[col_name].str.len() > 3]
+    df.loc[:, col_name] = df[col_name].map(lambda x: x.lstrip("・"))
+    return df
+
+
+def extract_data(csv_path: str, do_filter: bool) -> pd.DataFrame:
     m: re.Match = re.match(r"(\d{6})_watcher(4|5)\.csv", os.path.basename(csv_path))
     year_month: str = m.group(1)
     num_type: str = m.group(2)
@@ -48,18 +54,24 @@ def extract_data(csv_path: str) -> pd.DataFrame:
             field: str = re.match(r"(.*?)関連", df.iat[i, 0].replace("\n", "")).group(1)
         df.iat[i, idx_col_region] = region
         df.iat[i, idx_col_field] = field
+    df["id"] = ""  # temporary
     tpl_eval: tuple[str] = ("◎", "○", "□", "▲", "×")
+    col_name: str
+    if num_type == "4":
+        df = df[df["景気の現状判断"].isin(tpl_eval)][COL_CURRENT]
+        col_name = "追加説明及び具体的状況の説明"
+    elif num_type == "5":
+        df = df[df["景気の先行き判断"].isin(tpl_eval)][COL_FUTURE]
+        col_name = "景気の先行きに対する判断理由"
+    else:
+        raise ValueError()
+    if do_filter:
+        df = filter_df_comment(df, col_name)
     df.reset_index(drop=True, inplace=True)
+    assert len(df) > 0
     df["id"] = df.apply(
         lambda row: "{}-{:04d}".format(row["year-month"], row.name), axis=1
     )
-    if num_type == "4":
-        df = df[df["景気の現状判断"].isin(tpl_eval)][COL_CURRENT]
-    elif num_type == "5":
-        df = df[df["景気の先行き判断"].isin(tpl_eval)][COL_FUTURE]
-    else:
-        raise ValueError()
-    assert len(df) > 0
     return df
 
 
@@ -71,10 +83,10 @@ def output_df_in_jsonl(df: pd.DataFrame, dirname: str, year_month: str) -> None:
         json.dump(lst, f, indent=2, ensure_ascii=False, allow_nan=False)
 
 
-def csv_to_json() -> None:
+def csv_to_json(do_filter: bool = True) -> None:
     for csv_path in sorted(glob.glob(str(DATA_DIR / "watcher" / "*" / "*.csv"))):
         print(f"\rProcessing {os.path.basename(csv_path)}", end="")
-        df: pd.DataFrame = extract_data(csv_path)
+        df: pd.DataFrame = extract_data(csv_path, do_filter=do_filter)
         m: re.Match = re.match(r"(\d{6})_watcher(4|5)\.csv", os.path.basename(csv_path))
         year_month: str = m.group(1)
         num_type: str = m.group(2)
