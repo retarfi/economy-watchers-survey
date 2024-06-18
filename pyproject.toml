@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "economy-watchers-survey"
-version = "2024.05.0"
+version = "2024.05.1"
 description = "Auto uploader for Economy Watchers Survey data"
 authors = ["Masahiro Suzuki <msuzuki9609@gmail.com>"]
 license = "MIT"
