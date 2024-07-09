@@ -57,12 +57,15 @@ def extract_data(csv_path: str, do_filter: bool) -> pd.DataFrame:
     df["id"] = ""  # temporary
     tpl_eval: tuple[str] = ("◎", "○", "□", "▲", "×")
     col_name: str
+    id_prefix: str
     if num_type == "4":
         df = df[df["景気の現状判断"].isin(tpl_eval)][COL_CURRENT]
         col_name = "追加説明及び具体的状況の説明"
+        id_prefix = "current"
     elif num_type == "5":
         df = df[df["景気の先行き判断"].isin(tpl_eval)][COL_FUTURE]
         col_name = "景気の先行きに対する判断理由"
+        id_prefix = "future"
     else:
         raise ValueError()
     if do_filter:
@@ -70,7 +73,8 @@ def extract_data(csv_path: str, do_filter: bool) -> pd.DataFrame:
     df.reset_index(drop=True, inplace=True)
     assert len(df) > 0
     df["id"] = df.apply(
-        lambda row: "{}-{:04d}".format(row["year-month"], row.name), axis=1
+        lambda row: "{}-{}-{:04d}".format(id_prefix, row["year-month"], row.name),
+        axis=1,
     )
     return df
 
