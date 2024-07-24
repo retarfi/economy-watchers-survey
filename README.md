@@ -43,13 +43,27 @@ The extracted data after filtering for current and future judgments in json form
 json形式での現状・先行きの判断についてフィルタリングを行った後に抽出したものをそれぞれ`data/current/202401.json`や`data/future/202401.json`のように格納しています。
 
 
+## Data detail
+Please refer to the following papers for the data detail.    
+データの詳細は、以下の論文を参照してください。
+
+- English paper: https://arxiv.org/abs/2407.14727
+
+
 ## License
 The codes in this repository are distributed under MIT.  
 The data is distributed under CC BY 4.0.
 
 
 ## Citation
-TBA
+```
+@preprint{suzuki2024-ews,
+  title={{Economy Watchers Survey provides Datasets and Tasks for Japanese Financial Domain}}, 
+  author={Masahiro Suzuki and Hiroki Sakaji},
+  year={2024},
+  doi={10.48550/arXiv.2407.14727} 
+}
+```
 
 
 ## Usage for local download
