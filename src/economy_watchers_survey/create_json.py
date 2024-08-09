@@ -22,7 +22,9 @@ COL_FUTURE: list[str] = col_default + [
 
 def filter_df_comment(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
     df = df[df[col_name].str.len() > 3]
-    df.loc[:, col_name] = df[col_name].map(lambda x: x.lstrip("・"))
+    df.loc[:, col_name] = df[col_name].map(
+        lambda text: "".join(map(lambda x: x.lstrip("・"), text.split("\n")))
+    )
     return df
 
 
