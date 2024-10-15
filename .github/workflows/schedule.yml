@@ -42,4 +42,13 @@ jobs:
         commit-message: Add ${{ steps.get_version.outputs.VERSION }} data
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
       if: steps.diff.outcome == 'failure'
-        
+    - name: Send slack message
+      uses: slackapi/slack-github-action@v1.27.0
+      with:
+        payload: |
+          {
+            "text": "Pull Request of Economy Watchers Survey is created"
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: steps.diff.outcome == 'failure'
