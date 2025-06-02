@@ -57,12 +57,15 @@ The data is distributed under CC BY 4.0.
 
 ## Citation
 ```
-@preprint{suzuki2024-ews,
-  title={{Economy Watchers Survey provides Datasets and Tasks for Japanese Financial Domain}}, 
-  author={Masahiro Suzuki and Hiroki Sakaji},
-  year={2024},
-  doi={10.48550/arXiv.2407.14727} 
-}
+@inproceedings{suzuki2024-ews,
+  author = {Suzuki, Masahiro and Sakaji, Hiroki},
+  title = {Economy Watchers Survey Provides Datasets and Tasks for Japanese Financial Domain},
+  year = {2025},
+  url = {https://doi.org/10.1145/3701716.3715304},
+  doi = {10.1145/3701716.3715304},
+  booktitle = {Companion Proceedings of the ACM on Web Conference 2025},
+  pages = {805–808}
+}  
 ```
 
 
