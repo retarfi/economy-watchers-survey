@@ -47,7 +47,8 @@ json形式での現状・先行きの判断についてフィルタリングを�
 Please refer to the following papers for the data detail.    
 データの詳細は、以下の論文を参照してください。
 
-- English paper: https://arxiv.org/abs/2407.14727
+- English paper: https://dl.acm.org/doi/10.1145/3701716.3715304
+- Japanese paper: https://doi.org/10.51094/jxiv.842
 
 
 ## License
@@ -61,7 +62,7 @@ The data is distributed under CC BY 4.0.
   author = {Suzuki, Masahiro and Sakaji, Hiroki},
   title = {Economy Watchers Survey Provides Datasets and Tasks for Japanese Financial Domain},
   year = {2025},
-  url = {https://doi.org/10.1145/3701716.3715304},
+  url = {https://dl.acm.org/doi/10.1145/3701716.3715304},
   doi = {10.1145/3701716.3715304},
   booktitle = {Companion Proceedings of the ACM on Web Conference 2025},
   pages = {805–808}
