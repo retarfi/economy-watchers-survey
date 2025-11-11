@@ -20,7 +20,7 @@ jobs:
     - name: Download from HuggingFace datasets
       run: |
         hf auth login --token ${{ secrets.HUGGING_FACE_SECRET }}
-        hf download retarfi/economy-watchers-survey --local-dir hf --local-dir-use-symlinks=False --repo-type dataset
+        hf download retarfi/economy-watchers-survey --local-dir hf --repo-type dataset
     - uses: actions/checkout@v4
     - name: Build test
       run: |
