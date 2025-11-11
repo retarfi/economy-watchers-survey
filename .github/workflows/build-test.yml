@@ -19,8 +19,8 @@ jobs:
         python -m pip install huggingface_hub
     - name: Download from HuggingFace datasets
       run: |
-        huggingface-cli login --token ${{ secrets.HUGGING_FACE_SECRET }}
-        huggingface-cli download retarfi/economy-watchers-survey --local-dir hf --local-dir-use-symlinks=False --repo-type dataset
+        hf auth login --token ${{ secrets.HUGGING_FACE_SECRET }}
+        hf download retarfi/economy-watchers-survey --local-dir hf --repo-type dataset
     - uses: actions/checkout@v4
     - name: Build test
       run: |

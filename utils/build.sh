@@ -1,5 +1,5 @@
 cd $(dirname $0)/..
-huggingface-cli download retarfi/economy-watchers-survey --local-dir hf --repo-type dataset --local-dir-use-symlinks=False
+hf download retarfi/economy-watchers-survey --local-dir hf --repo-type dataset
 
 array=("current" "future")
 TEST_SAMPLES=15000
