@@ -1,0 +1,2 @@
+# Keep the build check and release workflow on the same CLI version.
+huggingface_hub==1.33.0

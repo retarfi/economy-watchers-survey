@@ -27,14 +27,41 @@ jobs:
       run: |
         poetry run python -m src.economy_watchers_survey.crawl
         poetry run python -m src.economy_watchers_survey.create_json
+    - name: Check release data
+      id: release_data
+      env:
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+      run: |
+        IFS='.' read -r year month patch <<< "$VERSION"
+        for file in \
+          "data/watcher/$year/${year}${month}_watcher4.csv" \
+          "data/watcher/$year/${year}${month}_watcher5.csv" \
+          "data/current/${year}${month}.json" \
+          "data/future/${year}${month}.json"
+        do
+          if [ ! -s "$file" ]; then
+            echo "::notice::Release data is not ready: $file is missing or empty"
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+        done
+        echo "ready=true" >> "$GITHUB_OUTPUT"
+    - name: Bump version
+      if: steps.release_data.outputs.ready == 'true'
+      env:
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+      run: |
+        poetry version "$VERSION"
+        printf '__version__ = "%s"\n' "$VERSION" > src/economy_watchers_survey/version.py
     - name: Diff
       id: diff
+      if: steps.release_data.outputs.ready == 'true'
       run: |
         git add -N .
         git diff --name-only --exit-code
       continue-on-error: true
     - name: Make PR
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v8
       with:
         title: Add ${{ steps.get_version.outputs.VERSION }} data
         branch: release/${{ steps.get_version.outputs.VERSION }}
