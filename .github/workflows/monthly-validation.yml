@@ -1,0 +1,42 @@
+name: Monthly update validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Monthly data validation
+    # Other PRs skip this job, which still satisfies the required check.
+    if: startsWith(github.head_ref, 'release/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Run the validator from main; the PR contents are only read through git.
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate changed files and record counts
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: |
+          git fetch --no-tags origin "$HEAD_SHA"
+          python -m utils.validate_monthly_update --base "$BASE_SHA" --head "$HEAD_SHA" --version "${HEAD_BRANCH#release/}"
+
+  tests:
+    name: Automation tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -v
