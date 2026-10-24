@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - name: Get next version
       id: get_version
       run: |
@@ -61,6 +63,7 @@ jobs:
         git diff --name-only --exit-code
       continue-on-error: true
     - name: Make PR
+      id: cpr
       uses: peter-evans/create-pull-request@v8
       with:
         title: Add ${{ steps.get_version.outputs.VERSION }} data
@@ -69,13 +72,18 @@ jobs:
         commit-message: Add ${{ steps.get_version.outputs.VERSION }} data
         token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
       if: steps.diff.outcome == 'failure'
-    - name: Send slack message
-      uses: slackapi/slack-github-action@v1.27.0
-      with:
-        payload: |
-          {
-            "text": "Pull Request of Economy Watchers Survey is created"
-          }
+    # Auto-merge relies on repository settings that are not stored in code:
+    #   - Settings > General: "Allow auto-merge" and "Allow merge commits"
+    #   - Branch protection for main: require the Build, lint and Monthly data validation checks
+    # Validating here as well keeps a bad PR unmerged even if those settings are missing.
+    - name: Validate and enable auto-merge
+      if: steps.cpr.outputs.pull-request-number != ''
       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      if: steps.diff.outcome == 'failure'
+        GH_TOKEN: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+        PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+        PR_HEAD_SHA: ${{ steps.cpr.outputs.pull-request-head-sha }}
+        VERSION: ${{ steps.get_version.outputs.VERSION }}
+      run: |
+        git fetch --no-tags origin "$PR_HEAD_SHA"
+        python -m utils.validate_monthly_update --base origin/main --head "$PR_HEAD_SHA" --version "$VERSION"
+        gh pr merge "$PR_NUMBER" --auto --merge --match-head-commit "$PR_HEAD_SHA"
